@@ -31,7 +31,7 @@
   <body>
     <div id="app" class="container mt-5">
       <h1 class="text-center mb-4">Milk Order</h1>
-      <form @submit.prevent="generateEmail">
+      <form @submit.prevent="generateEmail" class="mb-3">
         <div class="mb-3">
           <label for="name" class="form-label">Your Name</label>
           <input
@@ -69,9 +69,9 @@
             min="0"
           />
           <span>X</span>
-          <label :for="item.name" class="form-label mt-1"
-            >{{ item.name }}</label
-          >
+          <label :for="item.name" class="form-label mt-1">
+            {{ item.name }} (Max: {{ item.maxQ }})
+          </label>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">
@@ -101,14 +101,24 @@
             accountNumber: "",
             address: "",
             milkItems: [
-              { name: "600ml Thickened Cream milk", quantity: 0 },
-              { name: "300ml Thickened Cream milk", quantity: 0 },
-              { name: "600ml Pure cream", quantity: 0 },
-              { name: "300ml Pure cream", quantity: 0 },
-              { name: "500ml Full Cream milk", quantity: 0 },
-              { name: "2L Full Cream milk", quantity: 0 },
-              { name: "1L Full Cream milk", quantity: 0 },
-              { name: "Vanilla Custard", quantity: 0 },
+              { name: "2L Full Cream Milk", quantity: 0, maxQ: 8 },
+              { name: "1L Full Cream Milk", quantity: 0, maxQ: 8 },
+              { name: "500ml Full Cream Milk", quantity: 0, maxQ: 8 },
+              { name: "1L Lactose Free Full Cream Milk", quantity: 0, maxQ: 2 },
+              { name: "1L Lite Lactose Free", quantity: 0, maxQ: 2 },
+              { name: "750ml Coffee Original", quantity: 0, maxQ: 2 },
+              { name: "750ml Triple Shot Coffee", quantity: 0, maxQ: 2 },
+              { name: "750ml Iced Chocolate", quantity: 0, maxQ: 2 },
+              { name: "500ml Iced Strawberry", quantity: 0, maxQ: 2 },
+              { name: "500ml Iced Chocolate", quantity: 0, maxQ: 2 },
+              { name: "500ml DBL Shot Coffee", quantity: 0, maxQ: 2 },
+              { name: "500ml Caramel latte", quantity: 0, maxQ: 2 },
+              { name: "600ml Thickened Cream milk", quantity: 0, maxQ: 1 },
+              { name: "300ml Thickened Cream milk", quantity: 0, maxQ: 1 },
+              { name: "600ml Pure cream", quantity: 0, maxQ: 1 },
+              { name: "300ml Pure cream", quantity: 0, maxQ: 1 },
+              { name: "1KG Natural Yogurt", quantity: 0, maxQ: 6 },
+              { name: "600g Vanilla Custard", quantity: 0, maxQ: 1 },
             ],
             shops: [
               {
