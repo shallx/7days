@@ -30,7 +30,11 @@
     <div id="app">
       <h1>{{ title }}</h1>
       <nav>
-        <a href="#" v-for="link in links" :key="link.text" :href="link.url">
+        <a
+          v-for="link in links"
+          :key="link.text"
+          :href="link.url"
+        >
           {{ link.text }}
         </a>
       </nav>
@@ -40,11 +44,11 @@
       const app = Vue.createApp({
         data() {
           return {
-            title: "Welcome to 7 days",
+            title: "Welcome to 7 days App",
             links: [
-              { text: "Cash Register", url: "#cash-register" },
-              { text: "Milk Order", url: "/milk-order" },
-              { text: "Fridge fillup", url: "#fridge-fillup" },
+              { text: "Cash Register", url: "pages/cash-register/index.html" },
+              { text: "Milk Order", url: "pages/milk-order/index.html" },
+              { text: "Fridge fillup", url: "fridge-fillup" },
             ],
           };
         },
