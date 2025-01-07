@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to 7 days</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      a {
+        display: block;
+        margin: 10px 0;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 18px;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{ title }}</h1>
+      <nav>
+        <a href="#" v-for="link in links" :key="link.text" :href="link.url">
+          {{ link.text }}
+        </a>
+      </nav>
+    </div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            title: "Welcome to 7 days",
+            links: [
+              { text: "Cash Register", url: "#cash-register" },
+              { text: "Milk Order", url: "/milk-order" },
+              { text: "Fridge fillup", url: "#fridge-fillup" },
+            ],
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

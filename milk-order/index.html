@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Milk Order</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .milk-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .milk-item input {
+        width: 60px;
+        margin-right: 10px;
+      }
+      .milk-item span {
+        margin: 0 10px;
+      }
+      #email-preview {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="container mt-5">
+      <h1 class="text-center mb-4">Milk Order</h1>
+      <form @submit.prevent="generateEmail">
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            v-model="name"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="shop" class="form-label">Shop</label>
+          <select
+            id="shop"
+            class="form-select"
+            v-model="selectedShop"
+            @change="updateShopDetails"
+            required
+          >
+            <option value="">Select shop</option>
+            <option v-for="shop in shops" :value="shop.name">
+              {{ shop.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="milk-item" v-for="(item, index) in milkItems" :key="index">
+          <input
+            type="number"
+            :id="item.name"
+            class="form-control"
+            v-model.number="item.quantity"
+            placeholder="0"
+            min="0"
+          />
+          <span>X</span>
+          <label :for="item.name" class="form-label mt-1"
+            >{{ item.name }}</label
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          Generate Email
+        </button>
+      </form>
+
+      <div
+        v-if="emailContent"
+        class="alert alert-success mt-4"
+        id="email-preview"
+      >
+        <h4>Email Preview</h4>
+        <pre>{{ emailContent }}</pre>
+        <button class="btn btn-secondary mt-2" @click="copyToClipboard">
+          Copy to Clipboard
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            name: "",
+            selectedShop: "",
+            accountNumber: "",
+            address: "",
+            milkItems: [
+              { name: "600ml Thickened Cream milk", quantity: 0 },
+              { name: "300ml Thickened Cream milk", quantity: 0 },
+              { name: "600ml Pure cream", quantity: 0 },
+              { name: "300ml Pure cream", quantity: 0 },
+              { name: "500ml Full Cream milk", quantity: 0 },
+              { name: "2L Full Cream milk", quantity: 0 },
+              { name: "1L Full Cream milk", quantity: 0 },
+              { name: "Vanilla Custard", quantity: 0 },
+            ],
+            shops: [
+              {
+                name: "Master",
+                accountNumber: "906409",
+                address: " Shop 10/39 Orchid Avenue, \nSurfer Paradise",
+              },
+              {
+                name: "Nano",
+                accountNumber: "906048",
+                address: "Shop 7 days, Shop 1/3195, \nSurfer Paradise",
+              },
+              {
+                name: "Cavill",
+                accountNumber: "906047",
+                address:
+                  "Shop 7 days, Shop 3/3180, Cavil Avenue, \nSurfer Paradise",
+              },
+            ],
+            emailContent: "",
+          };
+        },
+        methods: {
+          updateShopDetails() {
+            const shop = this.shops.find((s) => s.name === this.selectedShop);
+            if (shop) {
+              this.accountNumber = shop.accountNumber;
+              this.address = shop.address;
+            }
+          },
+          generateEmail() {
+            const itemsToOrder = this.milkItems.filter(
+              (item) => item.quantity > 0
+            );
+            if (!itemsToOrder.length) {
+              alert("Please add quantities for at least one item.");
+              return;
+            }
+
+            const itemsList = itemsToOrder
+              .map((item) => `${item.quantity} x ${item.name}`)
+              .join("\n");
+
+            this.emailContent = `Hi there,
+
+It’s ${this.name} from "7 Days", Surfer Paradise
+Account number ${this.accountNumber}
+Can I please have
+
+${itemsList}
+
+Opening hours 24/7
+
+${this.selectedShop}${this.address}`;
+
+            this.scrollToPreview();
+          },
+          scrollToPreview() {
+            this.$nextTick(() => {
+              const preview = document.getElementById("email-preview");
+              if (preview) {
+                preview.scrollIntoView({ behavior: "smooth" });
+              }
+            });
+          },
+          copyToClipboard() {
+            navigator.clipboard.writeText(this.emailContent).then(
+              () => {
+                alert("Email content copied to clipboard!");
+              },
+              (err) => {
+                console.error("Error copying text: ", err);
+              }
+            );
+          },
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>
