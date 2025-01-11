@@ -27,7 +27,7 @@
         margin: 0 10px;
       }
       #email-preview {
-        max-height: 300px;
+        /* max-height: 300px; */
         overflow-y: auto;
         background-color: #424242;
         border: 1px solid #555;
@@ -126,10 +126,10 @@
             accountNumber: "",
             address: "",
             milkItems: [
-              { name: "2L Full Cream Milk", quantity: 0 , maxQ: 8 },
+              { name: "2L Full Cream Milk", quantity: 0, maxQ: 8 },
               { name: "1L Full Cream Milk", quantity: 0, maxQ: 8 },
               { name: "500ml Full Cream Milk", quantity: 0, maxQ: 8 },
-              { name: "1L Lactose Free Full Cream Milk", quantity: 0, maxQ: 2},
+              { name: "1L Lactose Free Full Cream Milk", quantity: 0, maxQ: 2 },
               { name: "1L Lite Lactose Free", quantity: 0, maxQ: 2 },
               { name: "750ml Coffee Original", quantity: 0, maxQ: 2 },
               { name: "750ml Triple Shot Coffee", quantity: 0, maxQ: 2 },
@@ -197,7 +197,7 @@ ${itemsList}
 
 Opening hours 24/7
 
-${this.selectedShop}${this.address}`;
+${this.selectedShop} ${this.address}`;
 
             this.scrollToPreview();
           },
