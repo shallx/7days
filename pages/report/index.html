@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reporting</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #2d2d2d;
+        color: #ffffff;
+      }
+      .form-control {
+        background-color: #3a3a3a;
+        color: #ffffff;
+        font-size: 0.9rem;
+        padding: 0.4rem;
+      }
+      .form-control:focus {
+        background-color: #4a4a4a;
+        color: #ffffff;
+      }
+      h1 {
+        font-size: 1.2rem;
+      }
+      h4 {
+        font-size: 1rem;
+      }
+      label {
+        font-size: 0.9rem;
+      }
+      button {
+        font-size: 0.9rem;
+      }
+      .date-input,
+      .shop-name,
+      .time-dropdown {
+        border: none;
+        background-color: transparent;
+        color: #ffffff;
+        font-size: 0.9rem;
+        padding: 0.2rem;
+      }
+      .shop-name-container select {
+        border: none;
+        background-color: transparent;
+        color: #ffffff;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.8rem;
+        color: #bbb;
+      }
+      .time-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .right-align {
+        text-align: right;
+      }
+      .modal-content {
+        background-color: #ffffff;
+        color: #000000;
+      }
+      .modal-header,
+      .modal-footer {
+        border: none;
+      }
+      .report-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+    </style>
+    <script src="https://unpkg.com/vue@3"></script>
+  </head>
+  <body>
+    <div id="app" class="container mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <input type="date" class="date-input" v-model="defaultDate" />
+        </div>
+        <h1 class="text-center">Reporting</h1>
+        <div class="right-align">
+          <select class="time-dropdown" v-model="defaultTime">
+            <option value="am">AM</option>
+            <option value="pm">PM</option>
+          </select>
+          <div class="shop-name-container">
+            <select v-model="shopName">
+              <option value="Master">Master</option>
+              <option value="Nano">Nano</option>
+              <option value="Cavill">Cavill</option>
+              <option value="Orchid">Orchid</option>
+              <option value="Hilton">Hilton</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="till-cash" class="form-label">Till Cash</label>
+          <input
+            type="number"
+            class="form-control"
+            id="till-cash"
+            v-model.number="tillCash"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="system-cash" class="form-label">System Cash</label>
+          <input
+            type="number"
+            class="form-control"
+            id="system-cash"
+            v-model.number="systemCash"
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="expense" class="form-label">Expense</label>
+          <input
+            type="number"
+            class="form-control"
+            id="expense"
+            v-model.number="expense"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="eftpos" class="form-label">EFTPOS</label>
+          <input
+            type="number"
+            class="form-control"
+            id="eftpos"
+            v-model.number="eftpos"
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="z-report" class="form-label">Z-Report</label>
+        <input
+          type="number"
+          class="form-control"
+          id="z-report"
+          v-model.number="zReport"
+        />
+      </div>
+      <div class="text-end">
+        <button class="btn btn-primary" @click="generateReport">Generate Report</button>
+      </div>
+
+      <!-- Report Modal -->
+      <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="reportModalLabel">Report</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <p>{{ formattedDate }}</p>
+                  <p>{{ dayOfWeek }}</p>
+                </div>
+                <div class="text-end">
+                  <p>{{ defaultTime.toUpperCase() }} Shift</p>
+                  <p>{{ shopName }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="report-item">
+                <span>Cash:</span>
+                <span>${{ calculatedCash.toFixed(2) }}</span>
+              </div>
+              <div class="report-item">
+                <span>+Expense:</span>
+                <span>${{ expense.toFixed(2) }}</span>
+              </div>
+              <div class="report-item">
+                <span>+EFTPOS:</span>
+                <span>${{ eftpos.toFixed(2) }}</span>
+              </div>
+              <hr />
+              <div class="report-item">
+                <span>Sales:</span>
+                <span>${{ calculatedSales.toFixed(2) }}</span>
+              </div>
+              <div class="report-item">
+                <span>Z-Report:</span>
+                <span>${{ zReport.toFixed(2) }}</span>
+              </div>
+              <hr />
+              <div class="report-item">
+                <span>(+/-):</span>
+                <span>${{ salesDifference.toFixed(2) }}</span>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">&copy; Raf Ras</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            tillCash: 0,
+            systemCash: 0,
+            expense: 0,
+            eftpos: 0,
+            zReport: 0,
+            shopName: "Master",
+            defaultTime: "pm",
+            defaultDate: this.getDefaultDate(),
+          };
+        },
+        computed: {
+          formattedDate() {
+            const [year, month, day] = this.defaultDate.split("-");
+            return `${day}/${month}/${year}`;
+          },
+          dayOfWeek() {
+            const now = new Date(this.defaultDate);
+            return now.toLocaleDateString("en-US", { weekday: "long" });
+          },
+          calculatedCash() {
+            const minTillCash = 300;
+            const remainingCash = this.tillCash + this.expense - minTillCash;
+            return Math.floor(remainingCash / 5) * 5;
+          },
+          calculatedSales() {
+            return this.calculatedCash + this.expense + this.eftpos;
+          },
+          salesDifference() {
+            return this.calculatedSales - this.zReport;
+          },
+        },
+        methods: {
+          getDefaultDate() {
+            const now = new Date();
+            let adjustedDate = new Date(now);
+            if (now.getHours() < 11) {
+              adjustedDate.setDate(now.getDate() - 1);
+            }
+            const year = adjustedDate.getFullYear();
+            const month = String(adjustedDate.getMonth() + 1).padStart(2, "0");
+            const day = String(adjustedDate.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+          },
+          generateReport() {
+            const modal = new bootstrap.Modal(document.getElementById("reportModal"));
+            modal.show();
+          },
+        },
+        mounted() {
+          this.defaultDate = this.getDefaultDate();
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>
