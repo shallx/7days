@@ -58,8 +58,10 @@
       .right-align {
         text-align: right;
       }
-      .shop-name-container {
-        text-align: right;
+      .shop-name-container select {
+        border: none;
+        background-color: transparent;
+        color: #ffffff;
       }
     </style>
     <script src="https://unpkg.com/vue@3"></script>
@@ -78,11 +80,13 @@
             <option value="pm">PM</option>
           </select>
           <div class="shop-name-container">
-            <input
-              type="text"
-              class="shop-name right-align"
-              placeholder="Shop Name"
-            />
+            <select v-model="shopName">
+              <option value="Master">Master</option>
+              <option value="Nano">Nano</option>
+              <option value="Cavill">Cavill</option>
+              <option value="Orchid">Orchid</option>
+              <option value="Hilton">Hilton</option>
+            </select>
           </div>
         </div>
       </div>
@@ -176,6 +180,7 @@
             adjustedNotes: [],
             cashTakenOut: 0,
             defaultTime: "pm",
+            shopName: "Master",
           };
         },
         computed: {
