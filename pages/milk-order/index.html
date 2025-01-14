@@ -49,6 +49,14 @@
       .btn-secondary:hover {
         background-color: #5a6268;
       }
+      .btn-space {
+        margin-top: 10px;
+      }
+      footer {
+        margin-top: 20px;
+        text-align: center;
+        color: #eaeaea;
+      }
     </style>
   </head>
   <body>
@@ -84,13 +92,11 @@
 
         <div class="milk-item" v-for="(item, index) in milkItems" :key="index">
           <input
-            type="number"
+            type="text"
             :id="item.name"
             class="form-control"
-            v-model.number="item.quantity"
-            placeholder="0"
-            min="0"
-            step="0.05"
+            v-model="item.quantity"
+            placeholder=""
           />
           <span>X</span>
           <label :for="item.name" class="form-label mt-1">
@@ -110,13 +116,16 @@
       >
         <h4>Email Preview</h4>
         <pre>{{ emailContent }}</pre>
-        <button class="btn btn-secondary mt-2" @click="copyToClipboard">
+        <button class="btn btn-secondary mt-2 btn-space" @click="copyToClipboard">
           Copy to Clipboard
         </button>
-        <button class="btn btn-secondary mt-2" @click="sendEmail">
+        <button class="btn btn-secondary mt-2 btn-space" @click="sendEmail">
           Send Email
         </button>
       </div>
+      <footer>
+        &copy; Rafat Rashid Rahi
+      </footer>
     </div>
 
     <script>
@@ -128,24 +137,24 @@
             accountNumber: "",
             address: "",
             milkItems: [
-              { name: "2L Full Cream Milk", quantity: 0, maxQ: 8 },
-              { name: "1L Full Cream Milk", quantity: 0, maxQ: 8 },
-              { name: "500ml Full Cream Milk", quantity: 0, maxQ: 8 },
-              { name: "1L Lactose Free Full Cream Milk", quantity: 0, maxQ: 2 },
-              { name: "1L Lite Lactose Free", quantity: 0, maxQ: 2 },
-              { name: "750ml Coffee Original", quantity: 0, maxQ: 2 },
-              { name: "750ml Triple Shot Coffee", quantity: 0, maxQ: 2 },
-              { name: "750ml Iced Chocolate", quantity: 0, maxQ: 2 },
-              { name: "500ml Iced Strawberry", quantity: 0, maxQ: 2 },
-              { name: "500ml Iced Chocolate", quantity: 0, maxQ: 2 },
-              { name: "500ml DBL Shot Coffee", quantity: 0, maxQ: 2 },
-              { name: "500ml Caramel latte", quantity: 0, maxQ: 2 },
-              { name: "600ml Thickened Cream milk", quantity: 0, maxQ: 1 },
-              { name: "300ml Thickened Cream milk", quantity: 0, maxQ: 1 },
-              { name: "600ml Pure cream", quantity: 0, maxQ: 1 },
-              { name: "300ml Pure cream", quantity: 0, maxQ: 1 },
-              { name: "1KG Natural Yogurt", quantity: 0, maxQ: 6 },
-              { name: "600g Vanilla Custard", quantity: 0, maxQ: 1 },
+              { name: "2L Full Cream Milk", quantity: "", maxQ: 8 },
+              { name: "1L Full Cream Milk", quantity: "", maxQ: 8 },
+              { name: "500ml Full Cream Milk", quantity: "", maxQ: 8 },
+              { name: "1L Lactose Free Full Cream Milk", quantity: "", maxQ: 2 },
+              { name: "1L Lite Lactose Free", quantity: "", maxQ: 2 },
+              { name: "750ml Coffee Original", quantity: "", maxQ: 2 },
+              { name: "750ml Triple Shot Coffee", quantity: "", maxQ: 2 },
+              { name: "750ml Iced Chocolate", quantity: "", maxQ: 2 },
+              { name: "500ml Iced Strawberry", quantity: "", maxQ: 2 },
+              { name: "500ml Iced Chocolate", quantity: "", maxQ: 2 },
+              { name: "500ml DBL Shot Coffee", quantity: "", maxQ: 2 },
+              { name: "500ml Caramel latte", quantity: "", maxQ: 2 },
+              { name: "600ml Thickened Cream milk", quantity: "", maxQ: 1 },
+              { name: "300ml Thickened Cream milk", quantity: "", maxQ: 1 },
+              { name: "600ml Pure cream", quantity: "", maxQ: 1 },
+              { name: "300ml Pure cream", quantity: "", maxQ: 1 },
+              { name: "1KG Natural Yogurt", quantity: "", maxQ: 6 },
+              { name: "600g Vanilla Custard", quantity: "", maxQ: 1 },
             ],
             shops: [
               {
@@ -167,12 +176,14 @@
               {
                 name: "Orchid",
                 accountNumber: "906050",
-                address: "Shop 7 days, 16 Orchid Avenue, \nSurfer Paradise",
+                address:
+                  "Shop 7 days, 16 Orchid Avenue, \nSurfer Paradise",
               },
               {
                 name: "Hilton",
                 accountNumber: "906051",
-                address: "Shop 7 days, 4 Orchid Avenue, \nSurfer Paradise",
+                address:
+                  "Shop 7 days, 4 Orchid Avenue, \nSurfer Paradise",
               },
             ],
             emailContent: "",
@@ -188,7 +199,7 @@
           },
           generateEmail() {
             const itemsToOrder = this.milkItems.filter(
-              (item) => item.quantity > 0
+              (item) => parseFloat(item.quantity) > 0
             );
             if (!itemsToOrder.length) {
               alert("Please add quantities for at least one item.");
@@ -232,7 +243,7 @@ ${this.selectedShop} ${this.address}`;
             );
           },
           sendEmail() {
-            const mailtoLink = `mailto:xyz@gmail.com?subject=Milk Order&body=${encodeURIComponent(
+            const mailtoLink = `mailto:idcmilk1@gmail.com?subject=Milk Order&body=${encodeURIComponent(
               this.emailContent
             )}`;
             window.location.href = mailtoLink;
