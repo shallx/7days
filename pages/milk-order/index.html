@@ -27,7 +27,6 @@
         margin: 0 10px;
       }
       #email-preview {
-        /* max-height: 300px; */
         overflow-y: auto;
         background-color: #424242;
         border: 1px solid #555;
@@ -114,6 +113,9 @@
         <button class="btn btn-secondary mt-2" @click="copyToClipboard">
           Copy to Clipboard
         </button>
+        <button class="btn btn-secondary mt-2" @click="sendEmail">
+          Send Email
+        </button>
       </div>
     </div>
 
@@ -165,14 +167,12 @@
               {
                 name: "Orchid",
                 accountNumber: "906050",
-                address:
-                  "Shop 7 days, 16 Orchid Avenue, \nSurfer Paradise",
+                address: "Shop 7 days, 16 Orchid Avenue, \nSurfer Paradise",
               },
               {
                 name: "Hilton",
                 accountNumber: "906051",
-                address:
-                  "Shop 7 days, 4 Orchid Avenue, \nSurfer Paradise",
+                address: "Shop 7 days, 4 Orchid Avenue, \nSurfer Paradise",
               },
             ],
             emailContent: "",
@@ -230,6 +230,12 @@ ${this.selectedShop} ${this.address}`;
                 console.error("Error copying text: ", err);
               }
             );
+          },
+          sendEmail() {
+            const mailtoLink = `mailto:xyz@gmail.com?subject=Milk Order&body=${encodeURIComponent(
+              this.emailContent
+            )}`;
+            window.location.href = mailtoLink;
           },
         },
       });
