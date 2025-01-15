@@ -52,6 +52,9 @@
       .btn-space {
         margin-top: 10px;
       }
+      .mr-2 {
+        margin-right: 16px;
+      }
       footer {
         margin-top: 20px;
         text-align: center;
@@ -91,12 +94,14 @@
         </div>
 
         <div class="milk-item" v-for="(item, index) in milkItems" :key="index">
-          <input
-            type="text"
+            <input
+            type="number"
             :id="item.name"
             class="form-control"
             v-model="item.quantity"
             placeholder=""
+            min="0"
+            :max="item.maxInput || item.maxQ"
           />
           <span>X</span>
           <label :for="item.name" class="form-label mt-1">
@@ -116,7 +121,7 @@
       >
         <h4>Email Preview</h4>
         <pre>{{ emailContent }}</pre>
-        <button class="btn btn-secondary mt-2 btn-space" @click="copyToClipboard">
+        <button class="btn btn-secondary mt-2 btn-space mr-2" @click="copyToClipboard">
           Copy to Clipboard
         </button>
         <button class="btn btn-secondary mt-2 btn-space" @click="sendEmail">
@@ -137,9 +142,9 @@
             accountNumber: "",
             address: "",
             milkItems: [
-              { name: "2L Full Cream Milk", quantity: "", maxQ: 8 },
-              { name: "1L Full Cream Milk", quantity: "", maxQ: 8 },
-              { name: "500ml Full Cream Milk", quantity: "", maxQ: 8 },
+              { name: "2L Full Cream Milk", quantity: "", maxQ: 8, maxInput: 15},
+              { name: "1L Full Cream Milk", quantity: "", maxQ: 8, maxInput: 15 },
+              { name: "500ml Full Cream Milk", quantity: "", maxQ: 8, maxInput: 15 },
               { name: "1L Lactose Free Full Cream Milk", quantity: "", maxQ: 2 },
               { name: "1L Lite Lactose Free", quantity: "", maxQ: 2 },
               { name: "750ml Coffee Original", quantity: "", maxQ: 2 },
