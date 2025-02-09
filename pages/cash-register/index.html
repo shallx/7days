@@ -67,6 +67,30 @@
     <script src="https://unpkg.com/vue@3"></script>
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">7 days</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="../../index.html">Home</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
     <div id="app" class="container mt-5">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
@@ -180,7 +204,7 @@
         data() {
           return {
             notes: [
-              { value: 50, count: "", isNote: true},
+              { value: 50, count: "", isNote: true },
               { value: 20, count: "", isNote: true },
               { value: 10, count: "", isNote: true },
               { value: 5, count: "", isNote: true },
@@ -201,7 +225,6 @@
           };
         },
         computed: {
-          
           coinsSum() {
             return this.notes
               .filter((note) => note.value <= 2)
@@ -238,8 +261,8 @@
           },
         },
         methods: {
-          showNotesInput(note){
-            if(!note.isNote) return true;
+          showNotesInput(note) {
+            if (!note.isNote) return true;
             else {
               return this.isIndividualNotesMode;
             }
