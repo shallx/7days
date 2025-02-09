@@ -164,19 +164,19 @@
         data() {
           return {
             notes: [
-              { value: 50, count: 0 },
-              { value: 20, count: 0 },
-              { value: 10, count: 0 },
-              { value: 5, count: 0 },
-              { value: 2, count: 0 },
-              { value: 1, count: 0 },
-              { value: 0.5, count: 0 },
-              { value: 0.2, count: 0 },
-              { value: 0.1, count: 0 },
-              { value: 0.05, count: 0 },
+              { value: 50, count: "" },
+              { value: 20, count: "" },
+              { value: 10, count: "" },
+              { value: 5, count: "" },
+              { value: 2, count: "" },
+              { value: 1, count: "" },
+              { value: 0.5, count: "" },
+              { value: 0.2, count: "" },
+              { value: 0.1, count: "" },
+              { value: 0.05, count: "" },
             ],
-            systemCash: 0,
-            summedNotes: 0,
+            systemCash: "", // Initialize with empty string
+            summedNotes: "", // Initialize with empty string
             adjustedNotes: [],
             cashTakenOut: 0,
             defaultTime: "pm",
@@ -187,12 +187,15 @@
           coinsSum() {
             return this.notes
               .filter((note) => note.value <= 2)
-              .reduce((sum, note) => sum + note.value * note.count, 0);
+              .reduce(
+                (sum, note) => sum + note.value * (Number(note.count) || 0),
+                0
+              );
           },
           total() {
-            const notesSum = this.summedNotes || 0;
+            const notesSum = Number(this.summedNotes) || 0;
             const calculatedNotesTotal = this.notes.reduce(
-              (sum, note) => sum + note.value * note.count,
+              (sum, note) => sum + note.value * (Number(note.count) || 0),
               0
             );
             return notesSum + calculatedNotesTotal;
@@ -219,8 +222,21 @@
         methods: {
           generateNotes() {
             const cashRegisterMin = 300;
-            const systemCash = this.systemCash;
+            const systemCash = Number(this.systemCash) || 0;
             const totalCash = this.total;
+
+            if (systemCash < 0 || Number(this.summedNotes) < 0) {
+              alert(
+                "Please enter valid non-negative values for System Cash and Notes Sum."
+              );
+              return;
+            }
+
+            if (systemCash > totalCash) {
+              alert("System Cash cannot exceed the total cash available.");
+              return;
+            }
+
             let remainingCash = totalCash - cashRegisterMin;
             this.adjustedNotes = [];
             this.cashTakenOut = 0;
@@ -231,7 +247,7 @@
               .forEach((note) => {
                 const count = Math.min(
                   Math.floor(remainingCash / note.value),
-                  note.count
+                  Number(note.count) || 0
                 );
                 if (count > 0) {
                   this.adjustedNotes.push({ value: note.value, count });
