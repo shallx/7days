@@ -90,7 +90,22 @@
           </div>
         </div>
       </div>
+
       <div class="row mb-3">
+        <div class="col-12 text-end">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="notesModeSwitch"
+              v-model="isIndividualNotesMode"
+            />
+            Use Individual Notes
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3" v-if="!isIndividualNotesMode">
         <div class="col-6">
           <label for="notes-sum" class="form-label">Notes Sum:</label>
         </div>
@@ -103,11 +118,12 @@
           />
         </div>
       </div>
+
       <div class="row mb-3" v-for="(note, index) in notes" :key="index">
-        <div class="col-2 text-end">
+        <div class="col-2 text-end" v-if="showNotesInput(note)">
           <label :for="'note-' + index">{{ note.value }}</label>
         </div>
-        <div class="col-4">
+        <div class="col-4" v-if="showNotesInput(note)">
           <input
             type="number"
             class="form-control"
@@ -116,10 +132,10 @@
             min="0"
           />
         </div>
-        <div class="col-1 text-center">
+        <div class="col-1 text-center" v-if="showNotesInput(note)">
           <span>=</span>
         </div>
-        <div class="col-4 text-end">
+        <div class="col-4 text-end" v-if="showNotesInput(note)">
           <span>{{ (note.value * note.count).toFixed(2) }}</span>
         </div>
       </div>
@@ -164,16 +180,16 @@
         data() {
           return {
             notes: [
-              { value: 50, count: "" },
-              { value: 20, count: "" },
-              { value: 10, count: "" },
-              { value: 5, count: "" },
-              { value: 2, count: "" },
-              { value: 1, count: "" },
-              { value: 0.5, count: "" },
-              { value: 0.2, count: "" },
-              { value: 0.1, count: "" },
-              { value: 0.05, count: "" },
+              { value: 50, count: "", isNote: true},
+              { value: 20, count: "", isNote: true },
+              { value: 10, count: "", isNote: true },
+              { value: 5, count: "", isNote: true },
+              { value: 2, count: "", isNote: false },
+              { value: 1, count: "", isNote: false },
+              { value: 0.5, count: "", isNote: false },
+              { value: 0.2, count: "", isNote: false },
+              { value: 0.1, count: "", isNote: false },
+              { value: 0.05, count: "", isNote: false },
             ],
             systemCash: "", // Initialize with empty string
             summedNotes: "", // Initialize with empty string
@@ -181,9 +197,11 @@
             cashTakenOut: 0,
             defaultTime: "pm",
             shopName: "Master",
+            isIndividualNotesMode: false, // Toggle mode: false = total notes mode, true = individual notes mode
           };
         },
         computed: {
+          
           coinsSum() {
             return this.notes
               .filter((note) => note.value <= 2)
@@ -220,6 +238,21 @@
           },
         },
         methods: {
+          showNotesInput(note){
+            if(!note.isNote) return true;
+            else {
+              return this.isIndividualNotesMode;
+            }
+          },
+          toggleNotesMode() {
+            this.isIndividualNotesMode = !this.isIndividualNotesMode;
+            // Reset summedNotes and individual notes when switching modes
+            if (this.isIndividualNotesMode) {
+              this.summedNotes = "";
+            } else {
+              this.notes.forEach((note) => (note.count = ""));
+            }
+          },
           generateNotes() {
             const cashRegisterMin = 300;
             const systemCash = Number(this.systemCash) || 0;
