@@ -94,7 +94,8 @@
     <div id="app" class="container mt-5">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-          <input type="date" class="date-input" :value="defaultDate" />
+          <!-- <input type="date" class="date-input" :value="defaultDate" /> -->
+          <div>{{ formatedDate }}</div>
           <div>{{ dayOfWeek }}</div>
         </div>
         <h1 style="font-size: medium" class="text-center">Cash Reg</h1>
@@ -171,7 +172,31 @@
           <h4>Total: {{ total.toFixed(2) }}</h4>
         </div>
       </div>
+      <!-- Show surpluss amount - 300 -->
       <div class="row mt-3">
+        <div class="col-6">
+          <h4>Surplus: {{ surplusAmount }}</h4>
+        </div>
+        <div class="col-6 text-end">
+          <h4>Difference: {{ cashDifference }}</h4>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-6">
+          <label for="cash-sale" class="form-label"
+            >Cash Sale Current Shift</label
+          >
+        </div>
+        <div class="col-6">
+          <input
+            type="number"
+            class="form-control"
+            id="cash-sale"
+            v-model.number="systemCash"
+          />
+        </div>
+      </div>
+      <!-- <div class="row mt-3">
         <div class="col-4">
           <label for="system-cash" class="form-label">System Cash</label>
           <input
@@ -195,8 +220,8 @@
           </li>
         </ul>
         <h4 class="mt-3">Total Cash Taken Out: {{ cashTakenOut }}</h4>
-      </div>
-      <div class="footer">&copy; Raf Ras</div>
+      </div> -->
+      <div class="footer">&copy; Rafat Rashid Rahi</div>
     </div>
 
     <script>
@@ -258,6 +283,22 @@
           dayOfWeek() {
             const now = new Date(this.defaultDate);
             return now.toLocaleDateString("en-US", { weekday: "long" });
+          },
+          formatedDate() {
+            // day/month/year
+            const now = new Date(this.defaultDate);
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, "0");
+            const day = String(now.getDate()).padStart(2, "0");
+            return `${day}/${month}/${year}`;
+          },
+          //  return type String
+          surplusAmount() {
+            return (this.total - 300).toFixed(2);
+          },
+          cashDifference() {
+            if (this.systemCash === "") return "";
+            return (this.surplusAmount - this.systemCash).toFixed(2);
           },
         },
         methods: {
