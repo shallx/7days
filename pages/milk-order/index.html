@@ -94,7 +94,7 @@
         </div>
 
         <div class="milk-item" v-for="(item, index) in milkItems" :key="index">
-            <input
+          <input
             type="number"
             :id="item.name"
             class="form-control"
@@ -121,16 +121,17 @@
       >
         <h4>Email Preview</h4>
         <pre>{{ emailContent }}</pre>
-        <button class="btn btn-secondary mt-2 btn-space mr-2" @click="copyToClipboard">
+        <button
+          class="btn btn-secondary mt-2 btn-space mr-2"
+          @click="copyToClipboard"
+        >
           Copy to Clipboard
         </button>
         <button class="btn btn-secondary mt-2 btn-space" @click="sendEmail">
           Send Email
         </button>
       </div>
-      <footer>
-        &copy; Rafat Rashid Rahi
-      </footer>
+      <footer>&copy; Rafat Rashid Rahi</footer>
     </div>
 
     <script>
@@ -142,10 +143,30 @@
             accountNumber: "",
             address: "",
             milkItems: [
-              { name: "2L Full Cream Milk", quantity: "", maxQ: 8, maxInput: 15},
-              { name: "1L Full Cream Milk", quantity: "", maxQ: 8, maxInput: 15 },
-              { name: "500ml Full Cream Milk", quantity: "", maxQ: 8, maxInput: 15 },
-              { name: "1L Lactose Free Full Cream Milk", quantity: "", maxQ: 2 },
+              {
+                name: "2L Full Cream Milk",
+                quantity: "",
+                maxQ: 8,
+                maxInput: 15,
+              },
+              { name: "2L Lite Milk", quantity: "", maxQ: 8, maxInput: 15 },
+              {
+                name: "1L Full Cream Milk",
+                quantity: "",
+                maxQ: 8,
+                maxInput: 15,
+              },
+              {
+                name: "500ml Full Cream Milk",
+                quantity: "",
+                maxQ: 8,
+                maxInput: 15,
+              },
+              {
+                name: "1L Lactose Free Full Cream Milk",
+                quantity: "",
+                maxQ: 2,
+              },
               { name: "1L Lite Lactose Free", quantity: "", maxQ: 2 },
               { name: "750ml Coffee Original", quantity: "", maxQ: 2 },
               { name: "750ml Triple Shot Coffee", quantity: "", maxQ: 2 },
@@ -170,25 +191,22 @@
               {
                 name: "Nano",
                 accountNumber: "906048",
-                address: "Shop 7 days, Shop 1/3195, \nSurfer Paradise",
+                address: "Shop 1/3195, \nSurfer Paradise",
               },
               {
                 name: "Cavill",
                 accountNumber: "906047",
-                address:
-                  "Shop 7 days, Shop 3/3180, Cavil Avenue, \nSurfer Paradise",
+                address: "Shop 3/3180, Cavil Avenue, \nSurfer Paradise",
               },
               {
                 name: "Orchid",
                 accountNumber: "906050",
-                address:
-                  "Shop 7 days, 16 Orchid Avenue, \nSurfer Paradise",
+                address: "16 Orchid Avenue, \nSurfer Paradise",
               },
               {
                 name: "Hilton",
                 accountNumber: "906051",
-                address:
-                  "Shop 7 days, 4 Orchid Avenue, \nSurfer Paradise",
+                address: "4 Orchid Avenue, \nSurfer Paradise",
               },
             ],
             emailContent: "",
@@ -217,7 +235,7 @@
 
             this.emailContent = `Hi there,
 
-It’s ${this.name} from "7 Days", Surfer Paradise
+It’s ${this.name} from "7 Days Convenience Store", Surfer Paradise
 Account number ${this.accountNumber}
 Can I please have
 
@@ -225,7 +243,7 @@ ${itemsList}
 
 Opening hours 24/7
 
-${this.selectedShop} ${this.address}`;
+${this.selectedShop} - 7 Days Convenience, ${this.address}`;
 
             this.scrollToPreview();
           },
